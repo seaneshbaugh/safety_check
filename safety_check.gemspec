@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ['Sean Eshbaugh']
   s.email       = ['seaneshbaugh@gmail.com']
   s.homepage    = 'https://github.com/seaneshbaugh/safety_check'
-  s.summary     = %q{Selectively add type safety to methods.}
-  s.description = %q{Selectively add type safety to methods.}
+  s.summary     = %q{Selectively add type safety to your methods.}
+  s.description = %q{Selectively add type safety to your methods.}
 
   s.rubyforge_project = 'safety_check'
 
