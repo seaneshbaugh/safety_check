@@ -52,7 +52,7 @@ describe SafetyCheck do
       hi = Hello.new
 
       expect do
-        hi.hallo('world') do |subject|
+        hi.hallo(5) do |subject|
           "what a wonderful #{subject}"
         end
       end.to raise_error
@@ -92,7 +92,7 @@ describe SafetyCheck do
 
     it 'class methods should raise an error when the wrong type of argument is used and a block is passed' do
       expect do
-        Hello.guten_morgen('world') do |subject|
+        Hello.guten_morgen(5) do |subject|
           "from a distant #{subject}"
         end
       end.to raise_error
