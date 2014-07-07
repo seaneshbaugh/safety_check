@@ -2,6 +2,15 @@ require 'spec_helper'
 
 describe SafetyCheck do
   describe 'safety_check' do
+    # When this test fails Ruby will segfault!
+    it 'should properly overwrite an existing call to safety_check' do
+      expect do
+        class Hello
+          safety_check :salut, [String, Symbol]
+        end
+      end.to_not raise_error
+    end
+
     it 'instance methods should not raise an error when the correct type of argument is used' do
       hi = Hello.new
 
@@ -58,6 +67,26 @@ describe SafetyCheck do
       end.to raise_error
     end
 
+    it 'instance methods should allow an argument\'s type constraint to be an array of types' do
+      hi = Hello.new
+
+      expect(
+        hi.salut('world')
+      ).to eq('Salut, world!')
+
+      expect(
+        hi.salut(:world)
+      ).to eq('Salut, world!')
+    end
+
+    it 'instance methods should raise an error when the wrong type of argument is used for arguments with an array of allowed types' do
+      hi = Hello.new
+
+      expect do
+        hi.salut(5)
+      end.to raise_error
+    end
+
     it 'class methods should not raise an error when the correct type of argument is used' do
       expect(Hello.salutations('world')).to eq('Good day, world!')
     end
@@ -95,6 +124,22 @@ describe SafetyCheck do
         Hello.guten_morgen(5) do |subject|
           "from a distant #{subject}"
         end
+      end.to raise_error
+    end
+
+    it 'class methods should allow an argument\'s type constraint to be an array of types' do
+      expect(
+        Hello.bonjour('world')
+      ).to eq('Bonjour, world!')
+
+      expect(
+        Hello.bonjour(:world)
+      ).to eq('Bonjour, world!')
+    end
+
+    it 'class methods should raise an error when the wrong type of argument is used for arguments with an array of allowed types' do
+      expect do
+        Hello.bonjour(5)
       end.to raise_error
     end
   end

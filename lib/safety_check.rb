@@ -21,7 +21,17 @@ module SafetyCheck
         raise ArgumentError, "wrong number of arguments for #{method_name.inspect} (#{arg_types.length} for #{required_arity})"
       end
 
-      receiver.send(:alias_method, unsafe_method_name, method_name)
+      arg_types = arg_types.map do |arg_type|
+        if arg_type.is_a? Array
+          arg_type
+        else
+          [arg_type]
+        end
+      end
+
+      unless receiver.instance_methods.include?(unsafe_method_name)
+        receiver.send(:alias_method, unsafe_method_name, method_name)
+      end
 
       receiver.send(:define_method, method_name) do |*args, &block|
         if args.length < required_arity
@@ -29,7 +39,7 @@ module SafetyCheck
         end
 
         args.zip(arg_types).each do |arg, arg_type|
-          unless arg.is_a? arg_type
+          unless arg_type.select { |arg_t| arg.is_a? arg_t }.length > 0
             raise ArgumentError, "expected #{arg.inspect} to be a #{arg_type} when calling #{method_name.inspect}"
           end
         end

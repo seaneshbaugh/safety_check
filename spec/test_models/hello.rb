@@ -22,6 +22,11 @@ class Hello
   end
   safety_check :hallo, String
 
+  def salut(subject)
+    "Salut, #{subject}!"
+  end
+  safety_check :salut, [String, Symbol]
+
   def self.salutations(subject)
     "Good day, #{subject}!"
   end
@@ -42,4 +47,9 @@ class Hello
     "Good morning, #{new_subject}!"
   end
   safety_check :guten_morgen, String
+
+  def self.bonjour(subject)
+    "Bonjour, #{subject}!"
+  end
+  safety_check :bonjour, [String, Symbol]
 end
